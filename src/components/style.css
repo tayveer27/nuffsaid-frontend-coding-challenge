@@ -1,0 +1,13 @@
+.incline {
+    display: inline-table;
+    min-width: 400px;
+    max-width: 400px;
+    margin-left: 20px;
+    /* border-collapse: collapse; */
+    border-collapse: separate;
+    border-spacing: 0 1em;
+}
+.hide {
+    display: none;
+}
+tr { padding-top: 20px;}
