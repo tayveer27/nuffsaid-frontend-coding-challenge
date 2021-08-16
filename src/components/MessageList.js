@@ -7,7 +7,8 @@ import './style.css'
 
 const StyledButton = styled.button`
 background-color: #88FCA3;
-padding: 10px;
+font-weight: bold;
+padding: 10px 30px;
 border: none;
 min-width: 50px;
 margin: 10px;
@@ -18,37 +19,50 @@ border-radius : 5px;
 
 const InfoTd = styled.td`
 background-color: #88FCA3;
-padding: 20px;
+padding: 15px;
 border: none;
 box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 border-radius : 5px;
+justify-content: space-between;
+flex-direction: column;
+display: flex;
 
 `;
 
 const WarningTd = styled.td`
+justify-content: space-between;
+flex-direction: column;
+display: flex;
 background-color: #FCE788;
-padding: 20px;
+padding: 15px;
 border: none;
+border-radius : 5px;
 box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 `;
 
 const ErrorTd = styled.td`
-    background-color: #F56236;
-    padding: 20px;
-    border: none;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+justify-content: space-between;
+flex-direction: column;
+display: flex;
+background-color: #F56236;
+padding: 15px;
+border: none;
+box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 border-radius : 5px;
 
 `;
 
 const ClearButton = styled.button`
+justify-content: flex-end;
+display: flex;
 background-color: Transparent;
 background-repeat:no-repeat;
+font-weight: bold;
 border: none;
 cursor:pointer;
 overflow: hidden;
 outline:none;
-text-decoration: underline;
+text-decoration: none;
 padding-top: 10px;`;
 
 const CenterDiv = styled.div`
@@ -57,12 +71,15 @@ const CenterDiv = styled.div`
 `
 
 const CenterDivv = styled.div`
-padding-left: 50px
+  display:flex;
+  flex-direction:row;
+  align-items: start;
 `
 
 const GapTable = styled.table`
 background : none;
-    `
+
+`
 
 let count = 0;
 
@@ -93,7 +110,7 @@ class MessageList extends Component {
     const { messages } = this.state
     this.setState({
       messages: [
-        ...messages.slice().reverse(),
+        ...messages,
         message,
       ],
     }, () => {
@@ -111,6 +128,7 @@ class MessageList extends Component {
   }
 
   clear(i) {
+    
     const { hide } = this.state
     this.setState({
       hide: [
@@ -119,6 +137,7 @@ class MessageList extends Component {
       ]
     });
     console.log(this.state.hide)
+    
   }
 
   render() {
@@ -133,24 +152,24 @@ class MessageList extends Component {
               this.api.start()
             }
             this.forceUpdate()
-          }}> {isApiStarted ? 'Stop' : 'Start'} </StyledButton>
-          <StyledButton className="dr-btn" onClick={() => this.setState({ messages: [] })}> Clear </StyledButton>
+          }}> {isApiStarted ? 'STOP' : 'START'} </StyledButton>
+          <StyledButton className="dr-btn" onClick={() => this.setState({ messages: [] })}> CLEAR </StyledButton>
         </CenterDiv>
         <br />
 
         <CenterDivv>
           <GapTable className="incline" id="tableOne" >
-            <th>Error Type 1</th>
+            <th>Error Type 1 <br/> Count : {this.state.error} </th>
 
             <tbody>
-             <th> Count : {this.state.error}</th>
+             
               {
-                this.state.messages.map((message, i) => {
+                this.state.messages.slice().reverse().map((message, i) => {
                   return (message.priority === 1) &&
                     <tr key={i} id={i} className={(this.state.hide.indexOf(i) != -1) ? 'hide' : ''}>
                       <ErrorTd className="td-error">{message.message}
-                        <br />
-                        <ClearButton className="clr-btn" onClick={() => this.clear(i)}>Clear</ClearButton>
+                        
+                        <ClearButton onClick={() => this.clear(i)}>Clear</ClearButton>
                       </ErrorTd></tr>
                 })
               }
@@ -158,20 +177,19 @@ class MessageList extends Component {
           </GapTable>
 
           <GapTable className="incline" id="tableTwo">
-            <th>Warning Type 2</th>
+            <th>Warning Type 2 <br/> Count : {this.state.warning}</th>
 
 
             <tbody>
-             <th> Count : {this.state.warning}</th>
 
               {
-                this.state.messages.map((message, i) => {
+                this.state.messages.slice().reverse().map((message, i) => {
                   count = count + 1;
                   return (message.priority === 2) &&
                     <tr id={i} key={i} className={(this.state.hide.indexOf(i) != -1) ? 'hide' : ''}>
                       <WarningTd className="td-warning">{message.message}
-                        <br />
-                        <ClearButton className="clr-btn" onClick={() => this.clear(i)}>Clear</ClearButton>
+                        
+                        <ClearButton onClick={() => this.clear(i)}>Clear</ClearButton>
                       </WarningTd>
                     </tr>
                 })
@@ -180,16 +198,15 @@ class MessageList extends Component {
           </GapTable>
 
           <GapTable className="incline" id="tableThree">
-            <th>Info Type 3</th>
+            <th>Info Type 3 <br/> Count : {this.state.info} </th>
             <tbody>
-             <th> Count : {this.state.info}</th>
               {
-                this.state.messages.map((message, i) => {
+                this.state.messages.slice().reverse().map((message, i) => {
                   return (message.priority === 3) &&
                     <tr id={i} key={i} className={(this.state.hide.indexOf(i) != -1) ? 'hide' : ''}>
                       <InfoTd className="td-info"> {message.message}
-                        <br />
-                        <ClearButton className="clr-btn" onClick={() => this.clear(i)}>Clear</ClearButton>
+                        
+                        <ClearButton onClick={() => this.clear(i)}>Clear</ClearButton>
                       </InfoTd>
                     </tr>
                 })
