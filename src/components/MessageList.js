@@ -74,6 +74,7 @@ const CenterDivv = styled.div`
   display:flex;
   flex-direction:row;
   align-items: start;
+  justify-content:center;
 `
 
 const GapTable = styled.table`
